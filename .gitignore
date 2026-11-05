@@ -1,0 +1,22 @@
+# Local environments, build products, and caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Credentials and private company data stay outside version control
+.env
+.env.*
+!.env.example
+.intap/
+data/
+*.pem
+*.key
+.DS_Store

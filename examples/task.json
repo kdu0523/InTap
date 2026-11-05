@@ -1,0 +1,11 @@
+{
+  "task_id": "DEMO-001",
+  "title": "Add a bulk-order discount",
+  "description": "Extend the synthetic order calculation with an optional discount in integer percentage points. Preserve the existing two-argument call behavior.",
+  "acceptance_criteria": [
+    "Calling calculate_total with two arguments returns the original total in cents.",
+    "Discount values range from 0 through 100; invalid values raise ValueError.",
+    "Discounted totals use integer arithmetic and round down to whole cents.",
+    "Regression tests cover default, discounted, boundary, and invalid inputs."
+  ]
+}

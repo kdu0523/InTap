@@ -1,0 +1,532 @@
+{
+  "catalog_version": "1.0.0",
+  "description": "Feature definitions, not implemented extractors. Unknown features require a catalog revision. Missing data is null with an explicit reason.",
+  "features": {
+    "code.cyclomatic_complexity": {
+      "definition_version": "1.0.0",
+      "unit": "count",
+      "description": "Per matched callable. Delta = after - before; absolute values are at least one.",
+      "value_schema": {
+        "type": "integer"
+      },
+      "allowed_phases": [
+        "before",
+        "after",
+        "delta"
+      ],
+      "allowed_methods": [
+        "static_analysis",
+        "deterministic_derivation"
+      ],
+      "implementation_status": "planned",
+      "absolute_minimum": 1
+    },
+    "code.cognitive_complexity": {
+      "definition_version": "1.0.0",
+      "unit": "count",
+      "description": "Per matched callable under a named analyzer and language-specific definition.",
+      "value_schema": {
+        "type": "integer"
+      },
+      "allowed_phases": [
+        "before",
+        "after",
+        "delta"
+      ],
+      "allowed_methods": [
+        "static_analysis",
+        "deterministic_derivation"
+      ],
+      "implementation_status": "planned",
+      "absolute_minimum": 0
+    },
+    "code.logical_lines": {
+      "definition_version": "1.0.0",
+      "unit": "count",
+      "description": "Logical code lines, excluding comments and blank lines.",
+      "value_schema": {
+        "type": "integer"
+      },
+      "allowed_phases": [
+        "before",
+        "after",
+        "delta"
+      ],
+      "allowed_methods": [
+        "static_analysis",
+        "deterministic_derivation"
+      ],
+      "implementation_status": "planned",
+      "absolute_minimum": 0
+    },
+    "code.max_nesting_depth": {
+      "definition_version": "1.0.0",
+      "unit": "count",
+      "description": "Maximum control-flow nesting depth in a matched callable.",
+      "value_schema": {
+        "type": "integer"
+      },
+      "allowed_phases": [
+        "before",
+        "after",
+        "delta"
+      ],
+      "allowed_methods": [
+        "static_analysis",
+        "deterministic_derivation"
+      ],
+      "implementation_status": "planned",
+      "absolute_minimum": 0
+    },
+    "code.function_length_lines": {
+      "definition_version": "1.0.0",
+      "unit": "count",
+      "description": "Physical callable span, including internal comments and blanks.",
+      "value_schema": {
+        "type": "integer"
+      },
+      "allowed_phases": [
+        "before",
+        "after",
+        "delta"
+      ],
+      "allowed_methods": [
+        "static_analysis",
+        "deterministic_derivation"
+      ],
+      "implementation_status": "planned",
+      "absolute_minimum": 0
+    },
+    "code.comment_to_code_ratio": {
+      "definition_version": "1.0.0",
+      "unit": "ratio",
+      "description": "Full-line and inline comment-bearing physical lines / physical lines containing code, excluding blank lines and docstrings. Categories may overlap.",
+      "value_schema": {
+        "type": "number",
+        "minimum": 0
+      },
+      "allowed_phases": [
+        "before",
+        "after"
+      ],
+      "allowed_methods": [
+        "static_analysis"
+      ],
+      "implementation_status": "planned",
+      "requires_fraction": true
+    },
+    "code.docstring_coverage": {
+      "definition_version": "1.0.0",
+      "unit": "ratio",
+      "description": "Documented callables / all callables.",
+      "value_schema": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1
+      },
+      "allowed_phases": [
+        "before",
+        "after"
+      ],
+      "allowed_methods": [
+        "static_analysis"
+      ],
+      "implementation_status": "planned",
+      "requires_fraction": true
+    },
+    "code.naming_snake_case_ratio": {
+      "definition_version": "1.0.0",
+      "unit": "ratio",
+      "description": "Snake-case function definitions / all function definitions.",
+      "value_schema": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1
+      },
+      "allowed_phases": [
+        "before",
+        "after"
+      ],
+      "allowed_methods": [
+        "static_analysis"
+      ],
+      "implementation_status": "planned",
+      "requires_fraction": true
+    },
+    "code.type_annotation_coverage": {
+      "definition_version": "1.0.0",
+      "unit": "ratio",
+      "description": "Annotated parameter and return slots / all eligible slots.",
+      "value_schema": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1
+      },
+      "allowed_phases": [
+        "before",
+        "after"
+      ],
+      "allowed_methods": [
+        "static_analysis"
+      ],
+      "implementation_status": "planned",
+      "requires_fraction": true
+    },
+    "code.change_churn": {
+      "definition_version": "1.0.0",
+      "unit": "lines",
+      "description": "Added plus deleted lines in the change, excluding generated and vendored files.",
+      "value_schema": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "allowed_phases": [
+        "event"
+      ],
+      "allowed_methods": [
+        "deterministic_derivation"
+      ],
+      "implementation_status": "planned"
+    },
+    "code.test_to_production_churn_ratio": {
+      "definition_version": "1.0.0",
+      "unit": "ratio",
+      "description": "Test-code churn / production-code churn; undefined when production churn is zero.",
+      "value_schema": {
+        "type": "number",
+        "minimum": 0
+      },
+      "allowed_phases": [
+        "event"
+      ],
+      "allowed_methods": [
+        "deterministic_derivation"
+      ],
+      "implementation_status": "planned",
+      "requires_fraction": true
+    },
+    "architecture.pattern": {
+      "definition_version": "1.0.0",
+      "unit": "category",
+      "description": "Evidence-backed pattern classification per component; not a quality score.",
+      "value_schema": {
+        "enum": [
+          "dependency_injection",
+          "repository",
+          "adapter",
+          "service_layer",
+          "factory",
+          "composition",
+          "other",
+          "unknown"
+        ]
+      },
+      "allowed_phases": [
+        "before",
+        "after"
+      ],
+      "allowed_methods": [
+        "static_analysis",
+        "human_annotation",
+        "model_inference"
+      ],
+      "implementation_status": "planned"
+    },
+    "architecture.boundary_crossings": {
+      "definition_version": "1.0.0",
+      "unit": "count",
+      "description": "Dependency edges crossing configured module/service boundaries.",
+      "value_schema": {
+        "type": "integer"
+      },
+      "allowed_phases": [
+        "before",
+        "after",
+        "delta"
+      ],
+      "allowed_methods": [
+        "static_analysis",
+        "deterministic_derivation"
+      ],
+      "implementation_status": "planned",
+      "absolute_minimum": 0
+    },
+    "architecture.dependency_change_count": {
+      "definition_version": "1.0.0",
+      "unit": "count",
+      "description": "Dependency edges added plus removed in the selected change.",
+      "value_schema": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "allowed_phases": [
+        "event"
+      ],
+      "allowed_methods": [
+        "static_analysis"
+      ],
+      "implementation_status": "planned"
+    },
+    "implementation.error_handling": {
+      "definition_version": "1.0.0",
+      "unit": "category",
+      "description": "Observed error-handling strategy per changed component.",
+      "value_schema": {
+        "enum": [
+          "exceptions",
+          "result_type",
+          "return_sentinel",
+          "retry",
+          "propagate",
+          "other",
+          "unknown"
+        ]
+      },
+      "allowed_phases": [
+        "before",
+        "after"
+      ],
+      "allowed_methods": [
+        "static_analysis",
+        "human_annotation",
+        "model_inference"
+      ],
+      "implementation_status": "planned"
+    },
+    "review.topic": {
+      "definition_version": "1.0.0",
+      "unit": "category",
+      "description": "Topic of a single comment or labeled span.",
+      "value_schema": {
+        "enum": [
+          "correctness",
+          "tests",
+          "architecture",
+          "security",
+          "performance",
+          "readability",
+          "domain",
+          "requirements",
+          "other"
+        ]
+      },
+      "allowed_phases": [
+        "event"
+      ],
+      "allowed_methods": [
+        "human_annotation",
+        "model_inference"
+      ],
+      "implementation_status": "planned"
+    },
+    "communication.review_intent": {
+      "definition_version": "1.0.0",
+      "unit": "category",
+      "description": "Communicative intent of a single comment, not a personality trait.",
+      "value_schema": {
+        "enum": [
+          "question",
+          "request_change",
+          "suggestion",
+          "explanation",
+          "acknowledgement",
+          "other"
+        ]
+      },
+      "allowed_phases": [
+        "event"
+      ],
+      "allowed_methods": [
+        "human_annotation",
+        "model_inference"
+      ],
+      "implementation_status": "planned"
+    },
+    "communication.sentiment_score": {
+      "definition_version": "1.0.0",
+      "unit": "signed_score",
+      "description": "Optional comment-level polarity. Exclude code blocks and quoted text; do not aggregate into an employee quality score.",
+      "value_schema": {
+        "type": "number",
+        "minimum": -1,
+        "maximum": 1
+      },
+      "allowed_phases": [
+        "event"
+      ],
+      "allowed_methods": [
+        "human_annotation",
+        "model_inference"
+      ],
+      "implementation_status": "planned",
+      "default_enabled": false
+    },
+    "communication.hedging_ratio": {
+      "definition_version": "1.0.0",
+      "unit": "ratio",
+      "description": "Hedging expressions / eligible non-code tokens under a versioned language lexicon.",
+      "value_schema": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1
+      },
+      "allowed_phases": [
+        "event"
+      ],
+      "allowed_methods": [
+        "deterministic_derivation"
+      ],
+      "implementation_status": "planned",
+      "requires_fraction": true
+    },
+    "communication.rationale_present": {
+      "definition_version": "1.0.0",
+      "unit": "boolean",
+      "description": "A comment explicitly states a reason or tradeoff.",
+      "value_schema": {
+        "type": "boolean"
+      },
+      "allowed_phases": [
+        "event"
+      ],
+      "allowed_methods": [
+        "human_annotation",
+        "model_inference"
+      ],
+      "implementation_status": "planned"
+    },
+    "workflow.first_review_latency_hours": {
+      "definition_version": "1.0.0",
+      "unit": "hours",
+      "description": "Elapsed time from PR readiness to first human review; scheduling and queue context required.",
+      "value_schema": {
+        "type": "number",
+        "minimum": 0
+      },
+      "allowed_phases": [
+        "event"
+      ],
+      "allowed_methods": [
+        "deterministic_derivation"
+      ],
+      "implementation_status": "planned"
+    },
+    "workflow.review_response_latency_hours": {
+      "definition_version": "1.0.0",
+      "unit": "hours",
+      "description": "Elapsed time between a review request and a linked response; not active work duration.",
+      "value_schema": {
+        "type": "number",
+        "minimum": 0
+      },
+      "allowed_phases": [
+        "event"
+      ],
+      "allowed_methods": [
+        "deterministic_derivation"
+      ],
+      "implementation_status": "planned"
+    },
+    "workflow.review_rounds": {
+      "definition_version": "1.0.0",
+      "unit": "count",
+      "description": "Review cycles under a pinned cycle-definition rule.",
+      "value_schema": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "allowed_phases": [
+        "event"
+      ],
+      "allowed_methods": [
+        "deterministic_derivation"
+      ],
+      "implementation_status": "planned"
+    },
+    "workflow.requirement_churn": {
+      "definition_version": "1.0.0",
+      "unit": "count",
+      "description": "Requirement revisions in a ticket before the specified cutoff.",
+      "value_schema": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "allowed_phases": [
+        "event"
+      ],
+      "allowed_methods": [
+        "deterministic_derivation"
+      ],
+      "implementation_status": "planned"
+    },
+    "workflow.rework_churn_ratio": {
+      "definition_version": "1.0.0",
+      "unit": "ratio",
+      "description": "Post-review churn / initial proposed churn; not necessarily rejected work.",
+      "value_schema": {
+        "type": "number",
+        "minimum": 0
+      },
+      "allowed_phases": [
+        "event"
+      ],
+      "allowed_methods": [
+        "deterministic_derivation"
+      ],
+      "implementation_status": "planned",
+      "requires_fraction": true
+    },
+    "workflow.feedback_adoption_ratio": {
+      "definition_version": "1.0.0",
+      "unit": "ratio",
+      "description": "Human-adjudicated adopted actionable suggestions / eligible actionable suggestions.",
+      "value_schema": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1
+      },
+      "allowed_phases": [
+        "event"
+      ],
+      "allowed_methods": [
+        "human_annotation"
+      ],
+      "implementation_status": "planned",
+      "requires_fraction": true
+    },
+    "outcome.reverted": {
+      "definition_version": "1.0.0",
+      "unit": "boolean",
+      "description": "Linked change was explicitly reverted within a declared follow-up horizon.",
+      "value_schema": {
+        "type": "boolean"
+      },
+      "allowed_phases": [
+        "event"
+      ],
+      "allowed_methods": [
+        "provider_field",
+        "human_annotation"
+      ],
+      "implementation_status": "planned",
+      "role": "evaluation_label"
+    },
+    "outcome.regression_detected": {
+      "definition_version": "1.0.0",
+      "unit": "boolean",
+      "description": "A regression was linked to the change under an explicit adjudication rule.",
+      "value_schema": {
+        "type": "boolean"
+      },
+      "allowed_phases": [
+        "event"
+      ],
+      "allowed_methods": [
+        "provider_field",
+        "human_annotation"
+      ],
+      "implementation_status": "planned",
+      "role": "evaluation_label"
+    }
+  }
+}

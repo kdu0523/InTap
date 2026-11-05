@@ -1,0 +1,17 @@
+# This configuration reads only the synthetic example repository.
+# Use a separate local config with an explicitly approved company source root.
+[company]
+id = "demo-company"
+
+[ingestion]
+root = "examples/company_repo"
+max_file_bytes = 200000
+max_files = 1000
+exclude_dirs = ["vendor", "node_modules", "build", "dist", "venv", "__pycache__"]
+
+[agent]
+rules = [
+  "Prefer a small, focused change that follows the surrounding architecture.",
+  "Add regression coverage for the requested behavior.",
+  "Explain assumptions and tradeoffs in the proposed change.",
+]

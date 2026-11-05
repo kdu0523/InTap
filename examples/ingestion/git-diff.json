@@ -1,0 +1,209 @@
+{
+  "schema_version": "1.0.0",
+  "feature_catalog_version": "1.0.0",
+  "event_id": "00000000-0000-4000-8000-000000000001",
+  "tenant_id": "demo-company",
+  "event_type": "git.diff",
+  "occurred_at": "2026-11-04T15:00:00Z",
+  "available_at": "2026-11-04T15:01:00Z",
+  "ingested_at": "2026-11-04T15:02:00Z",
+  "subject": {
+    "developer_id": "dev-001",
+    "identity_map_version": "1",
+    "role": "author",
+    "attribution_method": "verified_identity_map",
+    "attribution_confidence": null
+  },
+  "source": {
+    "system": "git",
+    "instance_id": "synthetic-instance",
+    "object_id": "demo-1",
+    "revision": "1",
+    "connector_name": "synthetic-fixture",
+    "connector_version": "1.0.0",
+    "raw_artifact": {
+      "uri": "artifact://demo-company/raw/1",
+      "sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "media_type": "application/json",
+      "redacted": true
+    }
+  },
+  "context": {
+    "team_id": "demo-team",
+    "task_type": "bugfix",
+    "task_type_source": "human_annotation",
+    "language": "python",
+    "frameworks": [],
+    "repository_id": "demo-repo",
+    "project_id": "DEMO",
+    "natural_language": null
+  },
+  "quality": {
+    "synthetic": true,
+    "is_bot": false,
+    "is_bulk_change": false,
+    "ai_assistance": "unknown",
+    "pair_programming": "unknown",
+    "source_completeness": "complete"
+  },
+  "retention": {
+    "policy_id": "demo-30-days",
+    "expires_at": "2026-12-04T15:02:00Z",
+    "redaction_version": "1",
+    "classification": "confidential"
+  },
+  "links": [],
+  "payload": {
+    "repository_id": "demo-repo",
+    "base_commit": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "head_commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "author_ids": [
+      "dev-001"
+    ],
+    "committer_id": "dev-001",
+    "files": [
+      {
+        "path": "orders.py",
+        "previous_path": null,
+        "change_type": "modified",
+        "language": "python",
+        "added_lines": 12,
+        "deleted_lines": 18,
+        "is_test": false,
+        "is_generated": false,
+        "is_vendor": false,
+        "diff_artifact": {
+          "uri": "artifact://demo-company/diff/1",
+          "sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+          "media_type": "text/x-diff",
+          "redacted": true
+        },
+        "before_blob": {
+          "uri": "artifact://demo-company/blobs/before_blob",
+          "sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+          "media_type": "text/x-python",
+          "redacted": true
+        },
+        "after_blob": {
+          "uri": "artifact://demo-company/blobs/after_blob",
+          "sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "media_type": "text/x-python",
+          "redacted": true
+        }
+      }
+    ]
+  },
+  "features": [
+    {
+      "name": "code.cyclomatic_complexity",
+      "definition_version": "1.0.0",
+      "entity_id": "orders.py::calculate_total",
+      "phase": "before",
+      "value": 8,
+      "unit": "count",
+      "status": "derived",
+      "method": "static_analysis",
+      "extractor": {
+        "name": "synthetic-fixture",
+        "version": "1.0.0",
+        "config_sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+      },
+      "evidence": [
+        "/payload/files/0/before_blob"
+      ],
+      "available_at": "2026-11-04T15:02:00Z",
+      "scope": {
+        "kind": "callable",
+        "path": "orders.py",
+        "symbol_id": "orders.calculate_total",
+        "start_line": 4,
+        "end_line": 12
+      }
+    },
+    {
+      "name": "code.cyclomatic_complexity",
+      "definition_version": "1.0.0",
+      "entity_id": "orders.py::calculate_total",
+      "phase": "after",
+      "value": 5,
+      "unit": "count",
+      "status": "derived",
+      "method": "static_analysis",
+      "extractor": {
+        "name": "synthetic-fixture",
+        "version": "1.0.0",
+        "config_sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+      },
+      "evidence": [
+        "/payload/files/0/after_blob"
+      ],
+      "available_at": "2026-11-04T15:02:00Z",
+      "scope": {
+        "kind": "callable",
+        "path": "orders.py",
+        "symbol_id": "orders.calculate_total",
+        "start_line": 4,
+        "end_line": 12
+      }
+    },
+    {
+      "name": "code.cyclomatic_complexity",
+      "definition_version": "1.0.0",
+      "entity_id": "orders.py::calculate_total",
+      "phase": "delta",
+      "value": -3,
+      "unit": "count",
+      "status": "derived",
+      "method": "deterministic_derivation",
+      "extractor": {
+        "name": "synthetic-fixture",
+        "version": "1.0.0",
+        "config_sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+      },
+      "evidence": [
+        "/payload/files/0/before_blob",
+        "/payload/files/0/after_blob"
+      ],
+      "available_at": "2026-11-04T15:02:00Z",
+      "scope": {
+        "kind": "callable",
+        "path": "orders.py",
+        "symbol_id": "orders.calculate_total",
+        "start_line": 4,
+        "end_line": 12
+      }
+    },
+    {
+      "name": "code.comment_to_code_ratio",
+      "definition_version": "1.0.0",
+      "entity_id": "orders.py::calculate_total",
+      "phase": "after",
+      "value": 0.2,
+      "unit": "ratio",
+      "status": "derived",
+      "method": "static_analysis",
+      "extractor": {
+        "name": "synthetic-fixture",
+        "version": "1.0.0",
+        "config_sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+      },
+      "evidence": [
+        "/payload/files/0/after_blob"
+      ],
+      "available_at": "2026-11-04T15:02:00Z",
+      "numerator": 4,
+      "denominator": 20,
+      "scope": {
+        "kind": "callable",
+        "path": "orders.py",
+        "symbol_id": "orders.calculate_total",
+        "start_line": 4,
+        "end_line": 12
+      }
+    }
+  ],
+  "processing": {
+    "pipeline_version": "synthetic-v1",
+    "configuration_sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+  }
+}

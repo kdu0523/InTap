@@ -1,0 +1,89 @@
+{
+  "schema_version": "1.0.0",
+  "feature_catalog_version": "1.0.0",
+  "event_id": "00000000-0000-4000-8000-000000000003",
+  "tenant_id": "demo-company",
+  "event_type": "jira.issue",
+  "occurred_at": "2026-11-04T15:00:00Z",
+  "available_at": "2026-11-04T15:01:00Z",
+  "ingested_at": "2026-11-04T15:02:00Z",
+  "subject": {
+    "developer_id": "dev-001",
+    "identity_map_version": "1",
+    "role": "assignee",
+    "attribution_method": "verified_identity_map",
+    "attribution_confidence": null
+  },
+  "source": {
+    "system": "jira",
+    "instance_id": "synthetic-instance",
+    "object_id": "demo-3",
+    "revision": "1",
+    "connector_name": "synthetic-fixture",
+    "connector_version": "1.0.0",
+    "raw_artifact": {
+      "uri": "artifact://demo-company/raw/3",
+      "sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "media_type": "application/json",
+      "redacted": true
+    }
+  },
+  "context": {
+    "team_id": "demo-team",
+    "task_type": "bugfix",
+    "task_type_source": "human_annotation",
+    "language": "python",
+    "frameworks": [],
+    "repository_id": "demo-repo",
+    "project_id": "DEMO",
+    "natural_language": "en"
+  },
+  "quality": {
+    "synthetic": true,
+    "is_bot": false,
+    "is_bulk_change": false,
+    "ai_assistance": "unknown",
+    "pair_programming": "unknown",
+    "source_completeness": "complete"
+  },
+  "retention": {
+    "policy_id": "demo-30-days",
+    "expires_at": "2026-12-04T15:02:00Z",
+    "redaction_version": "1",
+    "classification": "confidential"
+  },
+  "links": [],
+  "payload": {
+    "issue_id": "10001",
+    "issue_key": "DEMO-7",
+    "project_id": "DEMO",
+    "issue_type": "Bug",
+    "status": "In Progress",
+    "priority": "Normal",
+    "assignee_id": "dev-001",
+    "reporter_id": "dev-002",
+    "description_artifact": {
+      "uri": "artifact://demo-company/jira/10001",
+      "sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "media_type": "application/vnd.atlassian.adf+json",
+      "redacted": true
+    },
+    "created_at": "2026-11-03T12:00:00Z",
+    "updated_at": "2026-11-04T15:00:00Z",
+    "changelog": [
+      {
+        "change_id": "change-1",
+        "changed_at": "2026-11-04T15:00:00Z",
+        "actor_id": "dev-001",
+        "field_id": "status",
+        "from_value": "To Do",
+        "to_value": "In Progress"
+      }
+    ]
+  },
+  "features": [],
+  "processing": {
+    "pipeline_version": "synthetic-v1",
+    "configuration_sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+  }
+}

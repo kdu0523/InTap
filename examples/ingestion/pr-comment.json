@@ -1,0 +1,110 @@
+{
+  "schema_version": "1.0.0",
+  "feature_catalog_version": "1.0.0",
+  "event_id": "00000000-0000-4000-8000-000000000002",
+  "tenant_id": "demo-company",
+  "event_type": "pr.comment",
+  "occurred_at": "2026-11-04T15:00:00Z",
+  "available_at": "2026-11-04T15:01:00Z",
+  "ingested_at": "2026-11-04T15:02:00Z",
+  "subject": {
+    "developer_id": "dev-001",
+    "identity_map_version": "1",
+    "role": "reviewer",
+    "attribution_method": "verified_identity_map",
+    "attribution_confidence": null
+  },
+  "source": {
+    "system": "github",
+    "instance_id": "synthetic-instance",
+    "object_id": "demo-2",
+    "revision": "1",
+    "connector_name": "synthetic-fixture",
+    "connector_version": "1.0.0",
+    "raw_artifact": {
+      "uri": "artifact://demo-company/raw/2",
+      "sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "media_type": "application/json",
+      "redacted": true
+    }
+  },
+  "context": {
+    "team_id": "demo-team",
+    "task_type": "bugfix",
+    "task_type_source": "human_annotation",
+    "language": "python",
+    "frameworks": [],
+    "repository_id": "demo-repo",
+    "project_id": "DEMO",
+    "natural_language": "en"
+  },
+  "quality": {
+    "synthetic": true,
+    "is_bot": false,
+    "is_bulk_change": false,
+    "ai_assistance": "unknown",
+    "pair_programming": "unknown",
+    "source_completeness": "complete"
+  },
+  "retention": {
+    "policy_id": "demo-30-days",
+    "expires_at": "2026-12-04T15:02:00Z",
+    "redaction_version": "1",
+    "classification": "confidential"
+  },
+  "links": [],
+  "payload": {
+    "repository_id": "demo-repo",
+    "pull_request_id": "42",
+    "comment_id": "comment-12",
+    "thread_id": "thread-2",
+    "reply_to_comment_id": null,
+    "comment_kind": "review_inline",
+    "body_artifact": {
+      "uri": "artifact://demo-company/comment/12",
+      "sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "media_type": "text/plain",
+      "redacted": true
+    },
+    "anchor": {
+      "path": "orders.py",
+      "line": 8,
+      "side": "RIGHT",
+      "commit_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "original_commit_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    },
+    "thread_state": "unresolved",
+    "created_at": "2026-11-04T15:00:00Z",
+    "updated_at": "2026-11-04T15:00:00Z"
+  },
+  "features": [
+    {
+      "name": "communication.review_intent",
+      "definition_version": "1.0.0",
+      "entity_id": "comment-12",
+      "phase": "event",
+      "value": "request_change",
+      "unit": "category",
+      "status": "derived",
+      "method": "model_inference",
+      "extractor": {
+        "name": "synthetic-fixture",
+        "version": "1.0.0",
+        "config_sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "model_id": "fixture-not-a-model",
+        "prompt_version": "review-intent-v1"
+      },
+      "evidence": [
+        "/payload/body_artifact"
+      ],
+      "available_at": "2026-11-04T15:02:00Z",
+      "scope": {
+        "kind": "comment"
+      }
+    }
+  ],
+  "processing": {
+    "pipeline_version": "synthetic-v1",
+    "configuration_sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+  }
+}

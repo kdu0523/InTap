@@ -1,0 +1,1330 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:intap:schema:ingestion-event:1.0.0",
+  "title": "InTap ingestion event",
+  "description": "One immutable, tenant-scoped artifact revision and its reproducible features. Identity and features describe observable work, not private cognition.",
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "feature_catalog_version": {
+      "const": "1.0.0"
+    },
+    "event_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "tenant_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "event_type": {
+      "enum": [
+        "git.diff",
+        "pr.comment",
+        "jira.issue"
+      ]
+    },
+    "occurred_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "available_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "ingested_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "subject": {
+      "$ref": "#/$defs/subject"
+    },
+    "source": {
+      "$ref": "#/$defs/source"
+    },
+    "context": {
+      "$ref": "#/$defs/context"
+    },
+    "quality": {
+      "$ref": "#/$defs/quality"
+    },
+    "retention": {
+      "$ref": "#/$defs/retention"
+    },
+    "links": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/link"
+      }
+    },
+    "payload": {
+      "type": "object"
+    },
+    "features": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/feature"
+      }
+    },
+    "processing": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pipeline_version",
+        "configuration_sha256"
+      ],
+      "properties": {
+        "pipeline_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "configuration_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    }
+  },
+  "required": [
+    "schema_version",
+    "feature_catalog_version",
+    "event_id",
+    "tenant_id",
+    "event_type",
+    "occurred_at",
+    "available_at",
+    "ingested_at",
+    "subject",
+    "source",
+    "context",
+    "quality",
+    "retention",
+    "links",
+    "payload",
+    "features",
+    "processing"
+  ],
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "event_type": {
+            "const": "git.diff"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/git_diff"
+          },
+          "source": {
+            "properties": {
+              "system": {
+                "const": "git"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "event_type": {
+            "const": "pr.comment"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/pr_comment"
+          },
+          "source": {
+            "properties": {
+              "system": {
+                "const": "github"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "event_type": {
+            "const": "jira.issue"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "$ref": "#/$defs/jira_issue"
+          },
+          "source": {
+            "properties": {
+              "system": {
+                "const": "jira"
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "artifact": {
+      "type": "object",
+      "properties": {
+        "uri": {
+          "type": "string",
+          "format": "uri"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "media_type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "redacted": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "uri",
+        "sha256",
+        "media_type",
+        "redacted"
+      ],
+      "additionalProperties": false
+    },
+    "extractor": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "config_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "model_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "prompt_version": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "name",
+        "version",
+        "config_sha256"
+      ],
+      "additionalProperties": false
+    },
+    "context": {
+      "type": "object",
+      "properties": {
+        "team_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "task_type": {
+          "enum": [
+            "bugfix",
+            "feature",
+            "refactor",
+            "test",
+            "maintenance",
+            "unknown"
+          ]
+        },
+        "task_type_source": {
+          "enum": [
+            "source_field",
+            "human_annotation",
+            "model_inference",
+            "unknown"
+          ]
+        },
+        "language": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "frameworks": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "repository_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "project_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "natural_language": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "BCP-47 language tag of text being analyzed; not the programming language."
+        }
+      },
+      "required": [
+        "team_id",
+        "task_type",
+        "task_type_source",
+        "language",
+        "frameworks",
+        "repository_id",
+        "project_id",
+        "natural_language"
+      ],
+      "additionalProperties": false
+    },
+    "quality": {
+      "type": "object",
+      "properties": {
+        "synthetic": {
+          "type": "boolean"
+        },
+        "is_bot": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "is_bulk_change": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "ai_assistance": {
+          "enum": [
+            "declared_present",
+            "declared_absent",
+            "unknown"
+          ]
+        },
+        "pair_programming": {
+          "enum": [
+            "declared_present",
+            "declared_absent",
+            "unknown"
+          ]
+        },
+        "source_completeness": {
+          "enum": [
+            "complete",
+            "partial",
+            "unknown"
+          ]
+        }
+      },
+      "required": [
+        "synthetic",
+        "is_bot",
+        "is_bulk_change",
+        "ai_assistance",
+        "pair_programming",
+        "source_completeness"
+      ],
+      "additionalProperties": false
+    },
+    "subject": {
+      "type": "object",
+      "properties": {
+        "developer_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "identity_map_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "role": {
+          "enum": [
+            "author",
+            "reviewer",
+            "commenter",
+            "assignee",
+            "reporter",
+            "contributor",
+            "unknown"
+          ]
+        },
+        "attribution_method": {
+          "enum": [
+            "provider_actor_id",
+            "verified_identity_map",
+            "manual",
+            "inferred"
+          ]
+        },
+        "attribution_confidence": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "developer_id",
+        "identity_map_version",
+        "role",
+        "attribution_method",
+        "attribution_confidence"
+      ],
+      "additionalProperties": false
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "system": {
+          "enum": [
+            "git",
+            "github",
+            "jira"
+          ]
+        },
+        "instance_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "object_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "revision": {
+          "type": "string",
+          "minLength": 1
+        },
+        "connector_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "connector_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "raw_artifact": {
+          "$ref": "#/$defs/artifact"
+        }
+      },
+      "required": [
+        "system",
+        "instance_id",
+        "object_id",
+        "revision",
+        "connector_name",
+        "connector_version",
+        "raw_artifact"
+      ],
+      "additionalProperties": false
+    },
+    "retention": {
+      "type": "object",
+      "properties": {
+        "policy_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "redaction_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "classification": {
+          "enum": [
+            "internal",
+            "confidential",
+            "restricted"
+          ]
+        }
+      },
+      "required": [
+        "policy_id",
+        "expires_at",
+        "redaction_version",
+        "classification"
+      ],
+      "additionalProperties": false
+    },
+    "link": {
+      "type": "object",
+      "properties": {
+        "source_system": {
+          "enum": [
+            "git",
+            "github",
+            "jira"
+          ]
+        },
+        "instance_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "object_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "relation": {
+          "enum": [
+            "implements",
+            "reviews",
+            "responds_to",
+            "supersedes",
+            "references"
+          ]
+        },
+        "method": {
+          "enum": [
+            "explicit_reference",
+            "provider_link",
+            "human_verified",
+            "model_inferred"
+          ]
+        },
+        "confidence": {
+          "anyOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "available_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "source_system",
+        "instance_id",
+        "object_id",
+        "relation",
+        "method",
+        "confidence",
+        "available_at"
+      ],
+      "additionalProperties": false
+    },
+    "feature": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*(\\.[a-z][a-z0-9_]*)+$"
+        },
+        "definition_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "entity_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "phase": {
+          "enum": [
+            "before",
+            "after",
+            "delta",
+            "event"
+          ]
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": [
+                "number",
+                "string",
+                "boolean",
+                "null"
+              ]
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "number"
+              },
+              "minItems": 1
+            }
+          ]
+        },
+        "unit": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "enum": [
+            "observed",
+            "derived",
+            "unavailable"
+          ]
+        },
+        "method": {
+          "enum": [
+            "static_analysis",
+            "provider_field",
+            "deterministic_derivation",
+            "human_annotation",
+            "model_inference"
+          ]
+        },
+        "extractor": {
+          "$ref": "#/$defs/extractor"
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^/(payload|links|source)(/|$)"
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "available_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "missing_reason": {
+          "enum": [
+            "not_applicable",
+            "not_available",
+            "redacted",
+            "unsupported_language",
+            "parse_failure",
+            "insufficient_evidence",
+            "zero_denominator"
+          ]
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "numerator": {
+          "type": "number",
+          "minimum": 0
+        },
+        "denominator": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "scope": {
+          "$ref": "#/$defs/scope"
+        },
+        "confidence_calibration_version": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "name",
+        "definition_version",
+        "entity_id",
+        "phase",
+        "value",
+        "unit",
+        "status",
+        "method",
+        "extractor",
+        "evidence",
+        "available_at",
+        "scope"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "unavailable"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": "null"
+              }
+            },
+            "required": [
+              "missing_reason"
+            ]
+          },
+          "else": {
+            "properties": {
+              "value": {
+                "not": {
+                  "type": "null"
+                }
+              }
+            },
+            "not": {
+              "required": [
+                "missing_reason"
+              ]
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "method": {
+                "const": "model_inference"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "derived",
+                  "unavailable"
+                ]
+              },
+              "extractor": {
+                "required": [
+                  "model_id",
+                  "prompt_version"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "numerator"
+            ]
+          },
+          "then": {
+            "required": [
+              "denominator"
+            ]
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "denominator"
+            ]
+          },
+          "then": {
+            "required": [
+              "numerator"
+            ]
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "confidence"
+            ]
+          },
+          "then": {
+            "required": [
+              "confidence_calibration_version"
+            ]
+          }
+        }
+      ]
+    },
+    "changed_file": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "previous_path": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "change_type": {
+          "enum": [
+            "added",
+            "modified",
+            "deleted",
+            "renamed"
+          ]
+        },
+        "language": {
+          "type": "string",
+          "minLength": 1
+        },
+        "added_lines": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "deleted_lines": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "is_test": {
+          "type": "boolean"
+        },
+        "is_generated": {
+          "type": "boolean"
+        },
+        "is_vendor": {
+          "type": "boolean"
+        },
+        "diff_artifact": {
+          "$ref": "#/$defs/artifact"
+        },
+        "before_blob": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/artifact"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "after_blob": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/artifact"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "path",
+        "previous_path",
+        "change_type",
+        "language",
+        "added_lines",
+        "deleted_lines",
+        "is_test",
+        "is_generated",
+        "is_vendor",
+        "diff_artifact",
+        "before_blob",
+        "after_blob"
+      ],
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "change_type": {
+                "const": "added"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "before_blob": {
+                "type": "null"
+              },
+              "after_blob": {
+                "$ref": "#/$defs/artifact"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "change_type": {
+                "const": "deleted"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "before_blob": {
+                "$ref": "#/$defs/artifact"
+              },
+              "after_blob": {
+                "type": "null"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "change_type": {
+                "const": "modified"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "before_blob": {
+                "$ref": "#/$defs/artifact"
+              },
+              "after_blob": {
+                "$ref": "#/$defs/artifact"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "change_type": {
+                "const": "renamed"
+              }
+            }
+          },
+          "then": {
+            "properties": {
+              "before_blob": {
+                "$ref": "#/$defs/artifact"
+              },
+              "after_blob": {
+                "$ref": "#/$defs/artifact"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "git_diff": {
+      "type": "object",
+      "properties": {
+        "repository_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "base_commit": {
+          "type": "string",
+          "pattern": "^([a-f0-9]{40}|[a-f0-9]{64})$"
+        },
+        "head_commit": {
+          "type": "string",
+          "pattern": "^([a-f0-9]{40}|[a-f0-9]{64})$"
+        },
+        "author_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "committer_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/changed_file"
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "repository_id",
+        "base_commit",
+        "head_commit",
+        "author_ids",
+        "committer_id",
+        "files"
+      ],
+      "additionalProperties": false
+    },
+    "anchor": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "line": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "side": {
+          "enum": [
+            "LEFT",
+            "RIGHT"
+          ]
+        },
+        "commit_id": {
+          "type": "string",
+          "pattern": "^([a-f0-9]{40}|[a-f0-9]{64})$"
+        },
+        "original_commit_id": {
+          "type": "string",
+          "pattern": "^([a-f0-9]{40}|[a-f0-9]{64})$"
+        }
+      },
+      "required": [
+        "path",
+        "line",
+        "side",
+        "commit_id",
+        "original_commit_id"
+      ],
+      "additionalProperties": false
+    },
+    "pr_comment": {
+      "type": "object",
+      "properties": {
+        "repository_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "pull_request_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "comment_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "thread_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reply_to_comment_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "comment_kind": {
+          "enum": [
+            "conversation",
+            "review_inline",
+            "review_summary"
+          ]
+        },
+        "body_artifact": {
+          "$ref": "#/$defs/artifact"
+        },
+        "anchor": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/anchor"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "thread_state": {
+          "enum": [
+            "resolved",
+            "unresolved",
+            "unknown"
+          ]
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "repository_id",
+        "pull_request_id",
+        "comment_id",
+        "thread_id",
+        "reply_to_comment_id",
+        "comment_kind",
+        "body_artifact",
+        "anchor",
+        "thread_state",
+        "created_at",
+        "updated_at"
+      ],
+      "additionalProperties": false
+    },
+    "jira_change": {
+      "type": "object",
+      "properties": {
+        "change_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "changed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "actor_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "field_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "from_value": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "to_value": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "change_id",
+        "changed_at",
+        "actor_id",
+        "field_id",
+        "from_value",
+        "to_value"
+      ],
+      "additionalProperties": false
+    },
+    "jira_issue": {
+      "type": "object",
+      "properties": {
+        "issue_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "issue_key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "project_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "issue_type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1
+        },
+        "priority": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "assignee_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reporter_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "description_artifact": {
+          "$ref": "#/$defs/artifact"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "changelog": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/jira_change"
+          }
+        }
+      },
+      "required": [
+        "issue_id",
+        "issue_key",
+        "project_id",
+        "issue_type",
+        "status",
+        "priority",
+        "assignee_id",
+        "reporter_id",
+        "description_artifact",
+        "created_at",
+        "updated_at",
+        "changelog"
+      ],
+      "additionalProperties": false
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "callable",
+            "file",
+            "component",
+            "change",
+            "comment",
+            "issue"
+          ]
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "symbol_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "start_line": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "end_line": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "dependentRequired": {
+        "start_line": [
+          "end_line"
+        ],
+        "end_line": [
+          "start_line"
+        ]
+      }
+    }
+  }
+}
